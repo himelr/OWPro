@@ -2,6 +2,7 @@
 
 import pymongo,datetime
 from pymongo import MongoClient
+from bson.json_util import loads,dumps
 from Brick import BrickSetSpider
 
 CLIENT_URL = 'ec2-54-194-96-92.eu-west-1.compute.amazonaws.com'
@@ -24,13 +25,20 @@ def connect():
     post_id = collection.insert_one(post).inserted_id
     print(post_id)
 
+def save_stats(document):
+    collection = DB.game_stats
+    post_id = collection.insert_one(document).inserted_id
+    print(post_id)
 
-def findOne():
 
-    client = MongoClient('ec2-54-194-96-92.eu-west-1.compute.amazonaws.com', 27017)
-    db = client.owapi
-    posts = db.users
-    print(posts.find_one({"author": "Mike"}))
+def find_one(user):
+
+    stats = DB.game_stats
+    fs = stats.find_one({"user.username": user})
+    print(fs)
+
+    return dumps(fs)
+
 
 
 

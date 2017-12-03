@@ -1,9 +1,15 @@
 #!flask/bin/python
-import requests
+import requests,json
+
 from flask import Flask,jsonify
 from bs4 import BeautifulSoup
 
+from owapi.MongoUtil import save_stats
+from owapi.MongoUtil import find_one
+
 from owapi.BlizzardInterface import get_stats
+
+
 
 
 HEADERS = {'user-agent': 'Himel Rahman, overwatcher.tk, rebelhaze@gmail.com'}
@@ -17,10 +23,22 @@ app = Flask(__name__)
 def index():
 
     stats = _get_stats_json()
+    doc = jsonify({'stats': stats})
+    save_stats(stats)
+
+    return doc
 
 
-    return jsonify({'stats': stats})
+@app.route('/u/<username>')
 
+def find_user_stats(username):
+
+    stats = find_one(username)
+    #stats2 = json.dumps(stats)
+    statC = json.loads(stats)
+
+
+    return jsonify(statC)
 
 
 
@@ -40,6 +58,7 @@ def _get_stats_json():
     stats['user'] = {"username": user}
     # stats.append(stats_comp)
     # stats.append(stats_qck)
+
     return stats
 
 
