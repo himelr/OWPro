@@ -3,10 +3,10 @@ import requests,json
 from flask import Flask,jsonify
 from bs4 import BeautifulSoup
 
-from owapi.MongoUtil import save_stats
-from owapi.MongoUtil import find_one
+from owapi.mongo_util import save_stats
+from owapi.mongo_util import find_one
 
-from owapi.BlizzardInterface import get_stats
+from owapi.blizzard_interface import get_stats
 from owapi.leaderboard import Calculated
 
 

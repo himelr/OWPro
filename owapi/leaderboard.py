@@ -1,4 +1,5 @@
 import asyncio
+from locale import *
 
 class Calculated:
 
@@ -37,6 +38,14 @@ class Calculated:
     async def _calculate_support(self, mode = "competitive"):
 
 
+       s = self.stat
+
+
+       #print(int(s[mode]['Combat']['Barrier Damage Done']))
+       print(_get_int(s[mode]['Combat']['Barrier Damage Done']))
+
+
+
        self.SUPPORT += 5
        print()
 
@@ -53,6 +62,10 @@ class Calculated:
         while index < up_to:
             yield index
             index += 1
+
+def _get_int(c):
+    return int(c.replace(",", ""))
+
 
 def main():
     c = Calculated("s")

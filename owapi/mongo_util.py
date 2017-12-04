@@ -30,6 +30,8 @@ def save_stats(document):
     post_id = collection.insert_one(document).inserted_id
     print(post_id)
 
+def save_score():
+    collection = DB.leaderboard
 
 def find_one(user):
 
