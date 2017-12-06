@@ -3,7 +3,7 @@
 import pymongo,datetime
 from pymongo import MongoClient
 from bson.json_util import loads,dumps
-from Brick import BrickSetSpider
+
 
 CLIENT_URL = 'ec2-54-194-96-92.eu-west-1.compute.amazonaws.com'
 PORT = 27017
