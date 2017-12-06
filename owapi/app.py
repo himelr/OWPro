@@ -59,6 +59,7 @@ def find_user_stats(username):
 def _get_stats_json():
 
     # stats = get_stats('quickplay')
+    #Taimou-2526 , chipshajen-2102
     user = 'chipshajen-2102'
     soup = _get_soup(user)
 
