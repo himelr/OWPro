@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from owapi.mongo_util import save_stats
 from owapi.mongo_util import find_one
 
-from owapi.blizzard_interface import get_stats
+from owapi.blizzard_interface import get_stats, get_img
 from owapi.leaderboard import Calculated
 
 
@@ -59,8 +59,8 @@ def find_user_stats(username):
 def _get_stats_json():
 
     # stats = get_stats('quickplay')
-    #Taimou-2526 , chipshajen-2102
-    user = 'chipshajen-2102'
+    #Taimou-2526 , chipshajen-2102 Custa-1679 xQc-11273
+    user = 'Custa-1679'
     soup = _get_soup(user)
 
     stats_qck = get_stats(soup, mode='quickplay')
@@ -69,7 +69,10 @@ def _get_stats_json():
     stats = {}
     stats['competitive'] = stats_comp
     stats['quickplay'] = stats_qck
-    stats['user'] = {"username": user}
+    stats['user'] = {"username": user, "img" : get_img(soup) }
+
+
+
     # stats.append(stats_comp)
     # stats.append(stats_qck)
 

@@ -29,10 +29,8 @@ class Calculated:
         loop.run_until_complete(asyncio.wait(calculations))
         loop.close()
 
-
-
+        print(self.OBJECTIVE)
         print(self.SUPPORT)
-        # print(self.OBJECTIVE)
         print(self.ATTACK)
         #print(self.stat['competitive']['Combat']['Barrier Damage Done'])
         return 10;
@@ -42,6 +40,7 @@ class Calculated:
         assists = ["Defensive Assists" , "Healing Done" ,"Offensive Assists"]
 
 
+
         t = 0
         s = self.stat
         hoursT = s[mode]['Game']['Time Played'].split(' ')
@@ -51,17 +50,24 @@ class Calculated:
 
 
         for w in combat:
-            # print(w)
-            # print(_get_int(s[mode]['Combat'][w]) / h  * get_multiplier(w, "support_mp"))
-            t += _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w,"support_mp")
 
+            try:
+                # print(w)
+                # print(_get_int(s[mode]['Combat'][w]) / h  * get_multiplier(w, "support_mp"))
+                t += _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w,"support_mp")
+            except KeyError:
+                t+=0
         for w in assists:
-            # print(w)
-            # print(_get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp"))
-            t += _get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp")
 
+            try:
+
+                # print(w)
+                # print(_get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp"))
+                t += _get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp")
+            except KeyError:
+                t+=0
         if mode == 'quickplay':
-            self.SUPPORT+= int(t / 2)
+            self.SUPPORT+= int(t / 3.5)
 
         else:
             self.SUPPORT+= int(t)
@@ -70,7 +76,26 @@ class Calculated:
 
     async def _calculate_objective(self, mode = "competitive"):
 
+        def _get_sec(time_str):
+
+            try:
+                h, m, s = time_str.split(':')
+                return int(h) * 3600 + int(m) * 60 + int(s)
+
+            except ValueError:
+
+                try:
+                    m, s = time_str.split(':')
+                    return int(m) * 60 + int(s)
+
+                except ValueError:
+
+                    return 0;
+
+
+
         combat = ["Hero Damage Done", "Barrier Damage Done", "Eliminations", "Deaths", "Objective Kills"]
+        awards = ["Medals - Bronze", "Medals - Gold", "Medals - Silver"]
 
 
         t = 0
@@ -81,19 +106,42 @@ class Calculated:
 
         for w in combat:
             # print(w)
-            # print(_get_int(s[mode]['Combat'][w]) / h  * get_multiplier(w, "support_mp"))
-            t += _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w, "objective_mp")
+            # print(_get_int(s[mode]['Combat'][w]) / h  * get_multiplier(w, "support_mp") * 0.7)
+            try:
+                t += _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w, "support_mp2")  * 0.7
 
+            except KeyError:
+
+                t+= 0
         # for w in assists:
         #     # print(w)
         #     # print(_get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp"))
         #     t += _get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp")
 
+        for a in awards:
+            # print(a)
+            # print(_get_int(s[mode]['Match Awards'][a]) / h * get_multiplier(a, "awards_mp"))
+            try:
+                t += _get_int(s[mode]['Match Awards'][a]) / h * get_multiplier(a, "awards_mp")
+            except KeyError:
+                t+=0
+
+
+        objective_time = _get_sec(s[mode]['Combat']["Objective Time"]) / h * 50
+        print("ob")
+        print(objective_time)
+
+        t += objective_time
+
         if mode == 'quickplay':
-            self.OBJECTIVE += int(t / 2)
+            self.OBJECTIVE += int(t / 3.5)
 
         else:
             self.OBJECTIVE += int(t)
+
+
+
+
 
     async def _calculate_attack(self, mode = "competitive"):
 
@@ -122,15 +170,18 @@ class Calculated:
 
         for w in combat:
 
-            # print(w)
-            # print(_get_int(s[mode]['Combat'][w]) / h  * get_multiplier(w))
 
 
-            t+= _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w, "combat_mp")
+            try:
+                # print(w)
+                # print(_get_int(s[mode]['Combat'][w]) / h * get_multiplier(w, "combat_mp"))
+                t+= _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w, "combat_mp")
+            except KeyError:
+                t+=0;
 
 
         if mode == 'quickplay':
-            self.ATTACK += int(t / 2)
+            self.ATTACK += int(t / 3.5)
 
         else:
             self.ATTACK += int(t)
@@ -148,19 +199,29 @@ class Calculated:
 
 def get_multiplier(stat, dict):
 
-    combat_mp = {"Hero Damage Done" : 0.1,"Final Blows" : 25, "Multikills" : 1000, "All Damage Done" : 0.04, "Barrier Damage Done" : 0.09, "Eliminations" : 35 ,"Solo Kills" : 120}
-    support_mp = {"Hero Damage Done" : 0.5, "Barrier Damage Done": 0.15, "Eliminations" : 25, "Deaths": -80, "Objective Kills": 80}
-    assists_mp = {"Defensive Assists" : 65 , "Healing Done" : 0.4 , "Offensive Assists" : 65}
+    combat_mp = {"Hero Damage Done" : 0.20,"Final Blows" : 25, "Multikills" : 3000, "All Damage Done" : 0.08, "Barrier Damage Done" : 0.30, "Eliminations" : 100 ,"Solo Kills" : 150}
+    support_mp = {"Hero Damage Done" : 0.15, "Barrier Damage Done": 0.15, "Eliminations" : 25, "Deaths": -130, "Objective Kills": 80}
+    support_mp2 = {"Hero Damage Done": 0.5, "Barrier Damage Done": 0.20, "Eliminations": 25, "Deaths": -100,
+                  "Objective Kills": 100}
+    assists_mp = {"Defensive Assists" : 87 , "Healing Done" : 0.55 , "Offensive Assists" : 87}
+    awards_mp = {"Medals - Bronze" : 200, "Medals - Gold" : 600, "Medals - Silver" : 400}
 
     if dict == "combat_mp":
         return combat_mp[stat]
 
     elif dict == "support_mp":
+
         return support_mp[stat]
+
+    elif dict == "support_mp2":
+        return support_mp2[stat]
+
 
     elif dict == "assists_mp":
         return assists_mp[stat]
 
+    elif dict == "awards_mp":
+        return awards_mp[stat]
     else:
         return 1
 
