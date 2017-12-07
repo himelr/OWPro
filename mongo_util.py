@@ -48,6 +48,10 @@ def save_rank(document):
         data_id = collection.insert_one(document).inserted_id
 
 
+def fetch_all_pros():
+    collection = DB.leaderboards
+    players = collection.find({})
+    return dumps(players)
 
 def find_one(user):
 

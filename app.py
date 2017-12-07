@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from mongo_util import save_stats
 from mongo_util import find_one
 from mongo_util import save_rank
+from mongo_util import fetch_all_pros
 from blizzard_interface import get_stats, get_img
 from leaderboard import Calculated
 
@@ -75,7 +76,12 @@ def update_leaderboard():
 
 
     return "Done"
+@app.route('/leaderboard/get/')
+def fetch_leaderboard():
+    leaderboard = fetch_all_pros()
 
+    ld_json = json.loads(leaderboard)
+    return jsonify(ld_json)
 
 
 def _get_stats_json(user):
@@ -118,7 +124,8 @@ def _get_soup(user):
         return None
 
 if __name__ == '__main__':
-     app.run(debug=True, host = '0.0.0.0')
+
+    app.run(debug=True, host = '0.0.0.0')
     #app.run(debug=True)
 
 
