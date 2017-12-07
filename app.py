@@ -60,7 +60,7 @@ def _get_stats_json():
 
     # stats = get_stats('quickplay')
     #Taimou-2526 , chipshajen-2102 Custa-1679 xQc-11273
-    user = 'Custa-1679'
+    user = 'xQc-11273'
     soup = _get_soup(user)
 
     stats_qck = get_stats(soup, mode='quickplay')
