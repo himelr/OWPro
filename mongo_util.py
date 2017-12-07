@@ -58,8 +58,13 @@ def find_one(user):
     stats = DB.game_stats
     fs = stats.find_one({"user.username": user})
     print(fs)
+    if fs is None:
+        return None
+    else:
+        return dumps(fs)
 
-    return dumps(fs)
+
+
 
 
 
