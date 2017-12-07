@@ -33,6 +33,22 @@ def save_stats(document):
 def save_score():
     collection = DB.leaderboard
 
+def save_rank(document):
+    collection = DB.leaderboards
+    fs = collection.find_one({"user.username": document["user"]["username"]})
+
+    if fs != None:
+        fs["scores"] = document["scores"]
+        fs["user"] = document["user"]
+        fs['updated'] = datetime.datetime.utcnow()
+        collection.update_one({'_id':fs["_id"]}, {"$set": fs}, upsert=False)
+
+    else:
+        document["updated"] = datetime.datetime.utcnow()
+        data_id = collection.insert_one(document).inserted_id
+
+
+
 def find_one(user):
 
     stats = DB.game_stats

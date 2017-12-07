@@ -7,6 +7,7 @@ class Calculated:
 
 
     def __init__(self,stat):
+
         self.stat = stat
         self.SUPPORT = 0
         self.ATTACK = 0
@@ -29,11 +30,17 @@ class Calculated:
         loop.run_until_complete(asyncio.wait(calculations))
         loop.close()
 
-        print(self.OBJECTIVE)
-        print(self.SUPPORT)
-        print(self.ATTACK)
+        print("Objective "+ str(self.OBJECTIVE)+ " Support " + str(self.SUPPORT) + " Attack " + str(self.ATTACK))
+        # print(self.SUPPORT)
+        # print(self.ATTACK)
         #print(self.stat['competitive']['Combat']['Barrier Damage Done'])
-        return 10;
+        score = {}
+        score["objective"] = self.OBJECTIVE
+        score["support"] = self.SUPPORT
+        score["attack"] = self.ATTACK
+
+
+        return score
 
     async def _calculate_support(self, mode = "competitive"):
         combat = ["Hero Damage Done", "Barrier Damage Done", "Eliminations", "Deaths", "Objective Kills"]
@@ -76,6 +83,9 @@ class Calculated:
 
     async def _calculate_objective(self, mode = "competitive"):
 
+        combat = ["Hero Damage Done", "Barrier Damage Done", "Eliminations", "Deaths", "Objective Kills"]
+        awards = ["Medals - Bronze", "Medals - Gold", "Medals - Silver"]
+
         def _get_sec(time_str):
 
             try:
@@ -92,10 +102,6 @@ class Calculated:
 
                     return 0;
 
-
-
-        combat = ["Hero Damage Done", "Barrier Damage Done", "Eliminations", "Deaths", "Objective Kills"]
-        awards = ["Medals - Bronze", "Medals - Gold", "Medals - Silver"]
 
 
         t = 0
@@ -128,8 +134,8 @@ class Calculated:
 
 
         objective_time = _get_sec(s[mode]['Combat']["Objective Time"]) / h * 50
-        print("ob")
-        print(objective_time)
+        # print("ob")
+        # print(objective_time)
 
         t += objective_time
 
@@ -201,8 +207,7 @@ def get_multiplier(stat, dict):
 
     combat_mp = {"Hero Damage Done" : 0.20,"Final Blows" : 25, "Multikills" : 3000, "All Damage Done" : 0.08, "Barrier Damage Done" : 0.30, "Eliminations" : 100 ,"Solo Kills" : 150}
     support_mp = {"Hero Damage Done" : 0.15, "Barrier Damage Done": 0.15, "Eliminations" : 25, "Deaths": -130, "Objective Kills": 80}
-    support_mp2 = {"Hero Damage Done": 0.5, "Barrier Damage Done": 0.20, "Eliminations": 25, "Deaths": -100,
-                  "Objective Kills": 100}
+    support_mp2 = {"Hero Damage Done": 0.5, "Barrier Damage Done": 0.20, "Eliminations": 25, "Deaths": -100,"Objective Kills": 100}
     assists_mp = {"Defensive Assists" : 87 , "Healing Done" : 0.55 , "Offensive Assists" : 87}
     awards_mp = {"Medals - Bronze" : 200, "Medals - Gold" : 600, "Medals - Silver" : 400}
 
@@ -210,18 +215,17 @@ def get_multiplier(stat, dict):
         return combat_mp[stat]
 
     elif dict == "support_mp":
-
         return support_mp[stat]
 
     elif dict == "support_mp2":
         return support_mp2[stat]
-
 
     elif dict == "assists_mp":
         return assists_mp[stat]
 
     elif dict == "awards_mp":
         return awards_mp[stat]
+
     else:
         return 1
 

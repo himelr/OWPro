@@ -29,16 +29,14 @@ def get_stats(soup, mode = "competitive"):
        i += 1
 
 
-
-
     return temp
-
 
     #print(comp['competitive'][0]["Solo Kills - Most in Game"])
 
 def get_img(soup):
-    print(soup.find('img', attrs={'class': 'player-portrait'})['src'])
+    # print(soup.find('img', attrs={'class': 'player-portrait'})['src'])
     return soup.find('img', attrs={'class': 'player-portrait'})['src']
+
 
 def _parse_table(table):
 

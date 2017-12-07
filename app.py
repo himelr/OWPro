@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from mongo_util import save_stats
 from mongo_util import find_one
-
+from mongo_util import save_rank
 from blizzard_interface import get_stats, get_img
 from leaderboard import Calculated
 
@@ -24,7 +24,7 @@ def index():
 
 
 
-    stats = _get_stats_json()
+    stats = _get_stats_json("xQc-11273")
     calc = Calculated(stats)
 
     calc.calculate()
@@ -56,11 +56,33 @@ def find_user_stats(username):
 
 
 
-def _get_stats_json():
+@app.route('/leaderboard/update/')
+
+def update_leaderboard():
+    pro_players = ["Custa-1679","chipshajen-2102","Taimou-2526","xQc-11273", "HarryHook-2309", "Mickie-11702"]
+
+    for player in pro_players:
+        print(player + " parsing")
+        stats = _get_stats_json(player)
+        c = Calculated(stats)
+        scores = c.calculate()
+
+        ld_json = {}
+        ld_json["scores"] = scores
+        ld_json["user"] = stats["user"]
+
+        save_rank(ld_json)
+
+
+    return "Done"
+
+
+
+def _get_stats_json(user):
 
     # stats = get_stats('quickplay')
     #Taimou-2526 , chipshajen-2102 Custa-1679 xQc-11273
-    user = 'xQc-11273'
+    #user = 'xQc-11273'
     soup = _get_soup(user)
 
     stats_qck = get_stats(soup, mode='quickplay')
@@ -87,7 +109,7 @@ def _get_soup(user):
 
 
     if result.status_code == 200:
-        print("200")
+
         c = result.content
         soup = BeautifulSoup(c, 'lxml')
         return soup
@@ -96,7 +118,8 @@ def _get_soup(user):
         return None
 
 if __name__ == '__main__':
-    app.run(debug=True, host = '0.0.0.0')
+     app.run(debug=True, host = '0.0.0.0')
+    #app.run(debug=True)
 
 
 
