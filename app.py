@@ -41,19 +41,19 @@ def index():
 def find_user_stats(username):
 
     stats = find_one(username)
-    print(stats)
+
     #stats2 = json.dumps(stats)
     if stats is None:
 
         stats2 = _get_stats_json(username)
-        print(stats2)
+
         if stats2 != None:
             save_stats(stats2)
             return jsonify(json.loads(dumps(stats2)))
         else:
             return jsonify({"error":"no player"})
     else:
-        print("w")
+
         statC = json.loads(stats)
 
         return jsonify(statC)

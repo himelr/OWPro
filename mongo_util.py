@@ -23,7 +23,7 @@ def connect():
 
     #posts = db.movie
     post_id = collection.insert_one(post).inserted_id
-    print(post_id)
+
 
 def save_stats(document):
     collection = DB.game_stats
