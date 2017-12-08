@@ -8,7 +8,7 @@ from mongo_util import save_rank
 from mongo_util import fetch_all_pros
 from mongo_util import find_profile
 from mongo_util import add_player
-from blizzard_interface import get_stats, get_img
+from blizzard_interface import get_stats, get_img, get_rank
 from leaderboard import Calculated
 from bson.json_util import dumps
 
@@ -154,7 +154,7 @@ def _get_stats_json(user):
     stats = {}
     stats['competitive'] = stats_comp
     stats['quickplay'] = stats_qck
-    stats['user'] = {"username": user, "img" : get_img(soup) }
+    stats['user'] = {"username": user, "img" : get_img(soup),"rank" : get_rank(soup) }
 
 
 
@@ -183,7 +183,7 @@ def _get_soup(user):
 if __name__ == '__main__':
 
     app.run(debug=True, host = '0.0.0.0')
-   #app.run(debug=True)
+   # app.run(debug=True)
 
 
 

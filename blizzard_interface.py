@@ -37,7 +37,16 @@ def get_img(soup):
     # print(soup.find('img', attrs={'class': 'player-portrait'})['src'])
     return soup.find('img', attrs={'class': 'player-portrait'})['src']
 
+def get_rank(soup):
 
+    rank = {}
+    parsed  = soup.find('div', attrs={'class': 'competitive-rank'})
+    img = parsed.find('img')['src']
+    ranking = parsed.find('div', attrs={'class': 'u-align-center h5'}).text
+    rank["img"] = img
+    rank["ranking"] = ranking
+
+    return rank
 def _parse_table(table):
 
     table_body = table.find('tbody')
