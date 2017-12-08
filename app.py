@@ -94,6 +94,17 @@ def fetch_leaderboard():
 
     return jsonify(ld_json)
 
+@app.route('/score/get/<name>')
+def get_score(name):
+    stats = _get_stats_json(name)
+    c = Calculated(stats)
+    scoresJson = {}
+    scores = c.calculate()
+    scoresJson['scores'] = scores
+
+    return jsonify(scoresJson)
+
+
 
 def _get_stats_json(user):
 
@@ -140,7 +151,7 @@ def _get_soup(user):
 if __name__ == '__main__':
 
     app.run(debug=True, host = '0.0.0.0')
-    # app.run(debug=True)
+    #app.run(debug=True)
 
 
 
