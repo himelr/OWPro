@@ -2,11 +2,12 @@
 import requests,json
 from flask import Flask,jsonify
 from bs4 import BeautifulSoup
-
 from mongo_util import save_stats
 from mongo_util import find_one
 from mongo_util import save_rank
 from mongo_util import fetch_all_pros
+from mongo_util import find_profile
+from mongo_util import add_player
 from blizzard_interface import get_stats, get_img
 from leaderboard import Calculated
 from bson.json_util import dumps
@@ -95,6 +96,7 @@ def fetch_leaderboard():
     return jsonify(ld_json)
 
 @app.route('/score/get/<name>')
+
 def get_score(name):
     stats = _get_stats_json(name)
     c = Calculated(stats)
@@ -104,6 +106,36 @@ def get_score(name):
 
     return jsonify(scoresJson)
 
+
+@app.route('/profile/get/<name>')
+
+def get_profile(name):
+
+    try:
+         ret = jsonify(json.loads(find_profile(name)))
+         return ret
+
+    except TypeError:
+        return jsonify({"error" : "no user"})
+
+@app.route('/profile/add/<user>/<name>')
+
+def add_player_to(user,name):
+
+   if add_player(user,name):
+       return jsonify({"success" : "added"})
+   else:
+       return jsonify({"error": "failed"})
+
+
+def get_score(name):
+    stats = _get_stats_json(name)
+    c = Calculated(stats)
+    scoresJson = {}
+    scores = c.calculate()
+    scoresJson['scores'] = scores
+
+    return jsonify(scoresJson)
 
 
 def _get_stats_json(user):
@@ -151,7 +183,7 @@ def _get_soup(user):
 if __name__ == '__main__':
 
     app.run(debug=True, host = '0.0.0.0')
-    #app.run(debug=True)
+   #app.run(debug=True)
 
 
 

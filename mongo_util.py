@@ -63,6 +63,34 @@ def find_one(user):
     else:
         return dumps(fs)
 
+def add_player(user,name):
+    users = DB.users
+    fs = users.find_one({"username": user})
+
+    if fs is None:
+        return False
+
+    else:
+
+
+        try:
+            fs['players'].append(name)
+
+        except KeyError:
+            fs['players'] = []
+            fs['players'].append(name)
+
+        users.update_one({'_id': fs["_id"]}, {"$set": fs}, upsert=False)
+        return True
+
+def find_profile(user):
+    users = DB.users
+    fs = users.find_one({"username": user})
+
+    if fs is None:
+        return None
+    else:
+        return dumps(fs)
 
 
 
