@@ -3,7 +3,7 @@
 import pymongo,datetime
 from pymongo import MongoClient
 from bson.json_util import loads,dumps
-
+from bson.objectid import ObjectId
 
 CLIENT_URL = 'ec2-54-194-96-92.eu-west-1.compute.amazonaws.com'
 PORT = 27017
@@ -53,6 +53,25 @@ def fetch_all_pros():
     players = collection.find({})
     return dumps(players)
 
+def fetch_heroboard():
+    collection = DB.heroboards
+    herodoc = collection.find_one({"_id": ObjectId("5a2ee70f210e8918d8feb944")})
+
+    return dumps(herodoc)
+def save_heroboard(doc):
+    collection = DB.heroboards
+    herodoc = collection.find_one({"_id": ObjectId("5a2ee70f210e8918d8feb944")})
+    try:
+        if herodoc == None:
+            collection.insert(doc, check_keys=False)
+        else:
+            print("WWW")
+            doc["_id"] = herodoc["_id"]
+            collection.update({'_id': herodoc["_id"]}, {"$set": doc}, upsert=False, check_keys=False)
+
+    except TypeError:
+        return True
+
 def find_one(user):
 
     stats = DB.game_stats
@@ -69,6 +88,7 @@ def add_player(user,name):
 
     if fs is None:
         return False
+
 
     else:
 

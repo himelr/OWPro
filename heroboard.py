@@ -35,7 +35,7 @@ class HeroCalculations:
                 half[key] = sub_data
 
         return half
-
+    #Fixes scores to represent average.
     def fix_scores(self):
         for key,value in data_category_ids.items():
             for hero, score in self.data[key].items():
