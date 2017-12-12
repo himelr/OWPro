@@ -131,7 +131,7 @@ def calculate_hero(soup):
         data =_player_hero(category,mode = key)
         player_hero_data[key] = data
 
-
+    player_hero_data["img"] = hero_data_div_ids
     return player_hero_data
 
 def _player_hero(category, mode):
