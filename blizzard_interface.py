@@ -124,9 +124,9 @@ def get_hero(soup):
 def calculate_hero(soup):
 
     player_hero_data = {}
-
+    soup2 = soup.find('div', attrs={'id': 'competitive'})
     for key, value  in data_category_ids.items():
-        category = soup.find('div', attrs={'data-category-id': 'overwatch.guid.' + value})
+        category = soup2.find('div', attrs={'data-category-id': 'overwatch.guid.' + value})
 
         data =_player_hero(category,mode = key)
         player_hero_data[key] = data
