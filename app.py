@@ -1,4 +1,6 @@
+
 #!flask/bin/python
+import requests_cache
 import requests,json
 from flask import Flask,jsonify
 from bs4 import BeautifulSoup
@@ -57,6 +59,7 @@ test_players = [
 ]
 
 app = Flask(__name__)
+requests_cache.install_cache('github_cache', backend='sqlite', expire_after=180)
 
 @app.route('/')
 
