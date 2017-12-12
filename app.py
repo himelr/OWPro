@@ -10,10 +10,11 @@ from mongo_util import find_profile
 from mongo_util import add_player
 from mongo_util import save_heroboard
 from mongo_util import fetch_heroboard
-from blizzard_interface import get_stats, get_img, get_rank, calculate_hero
+from blizzard_interface import get_stats, get_img, get_rank, calculate_hero,hero_data_div_ids
 from leaderboard import Calculated
 from bson.json_util import dumps
 from heroboard import HeroCalculations
+
 
 
 
@@ -195,6 +196,7 @@ def hero_data():
      hc.calculate_top(data)
 
    hc.fix_scores()
+   hc.data["img"] = hero_data_div_ids
    save_heroboard(hc.data)
 
    return jsonify(hc.data)
