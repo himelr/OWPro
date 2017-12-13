@@ -10,6 +10,7 @@ from mongo_util import find_profile
 from mongo_util import add_player
 from mongo_util import save_heroboard
 from mongo_util import fetch_heroboard
+from mongo_util import update_user
 from blizzard_interface import get_stats, get_img, get_rank, calculate_hero,hero_data_div_ids
 from leaderboard import Calculated
 from bson.json_util import dumps
@@ -91,11 +92,19 @@ def find_user_stats(username):
         else:
             return jsonify({"error":"no player"})
     else:
+        stats2 = _get_stats_json(username)
 
-        statC = json.loads(stats)
+        if stats2 != None:
 
-        return jsonify(statC)
+            stats['competitive'] = stats2['competitive']
+            stats['quickplay'] = stats2['quickplay']
 
+            update_user(stats)
+            statC = json.loads(stats)
+
+            return jsonify(statC)
+        else:
+            return jsonify({"error": "no player"})
 
 @app.route('/u/score/<username>')
 

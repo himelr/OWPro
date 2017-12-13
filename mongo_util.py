@@ -81,6 +81,12 @@ def find_one(user):
         return None
     else:
         return dumps(fs)
+def update_user(doc):
+
+    stats = DB.game_stats
+    stats['updated'] = {"date": datetime.datetime.utcnow()}
+    stats.update_one({'_id': doc["_id"]}, {"$set": doc}, upsert=False)
+
 
 def add_player(user,name):
     users = DB.users
