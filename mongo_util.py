@@ -86,7 +86,7 @@ def update_user(doc):
 
     stats = DB.game_stats
     doc['updated'] = {"date": datetime.datetime.utcnow()}
-    doc2 = loads(doc)
+    doc2 = dumps(doc)
     stats.update_one({'_id': doc2["_id"]}, {"$set": doc2}, upsert=False)
 
 
