@@ -95,12 +95,12 @@ def find_user_stats(username):
         stats2 = _get_stats_json(username)
 
         if stats2 != None:
-
-            stats['competitive'] = stats2['competitive']
-            stats['quickplay'] = stats2['quickplay']
-
-            update_user(stats)
             statC = json.loads(stats)
+            statC['competitive'] = stats2['competitive']
+            statC['quickplay'] = stats2['quickplay']
+
+            update_user(statC)
+
 
             return jsonify(statC)
         else:
