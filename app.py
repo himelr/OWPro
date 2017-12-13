@@ -95,14 +95,14 @@ def find_user_stats(username):
         stats2 = _get_stats_json(username)
 
         if stats2 != None:
-            statC = json.loads(stats)
-            statC['competitive'] = stats2['competitive']
-            statC['quickplay'] = stats2['quickplay']
 
-            update_user(statC)
+            # statC['competitive'] = stats2['competitive']
+            # statC['quickplay'] = stats2['quickplay']
+
+            stats_new = update_user(stats2, username)
 
 
-            return jsonify(statC)
+            return jsonify(json.loads(stats_new))
         else:
             return jsonify({"error": "no player"})
 
@@ -272,8 +272,8 @@ def _get_soup(user):
 
 if __name__ == '__main__':
 
-    app.run(debug=True, host = '0.0.0.0')
-    # app.run(debug=True)
+    # app.run(debug=True, host = '0.0.0.0')
+    app.run(debug=True)
 
 
 
