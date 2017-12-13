@@ -84,7 +84,7 @@ def find_one(user):
 def update_user(doc):
 
     stats = DB.game_stats
-    stats['updated'] = {"date": datetime.datetime.utcnow()}
+    doc['updated'] = {"date": datetime.datetime.utcnow()}
     stats.update_one({'_id': doc["_id"]}, {"$set": doc}, upsert=False)
 
 
