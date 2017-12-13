@@ -6,11 +6,11 @@
 #
 #
 #
-# class ElectronicsSpider(CrawlSpider):
+# class ElectronicsSpider(scrapy.Spider):
 #     name = "electronics"
-#     allowed_domains = ["www.olx.com.pk"]
+#     allowed_domains = ["https://www.nettiauto.com/vaihtoautot?pfrom=3000&pto=7000"]
 #     start_urls = [
-#         'https://www.olx.com.pk/computers-accessories/',
+#         'https://www.nettiauto.com/vaihtoautot?pfrom=3000&pto=7000',
 #         'https://www.olx.com.pk/tv-video-audio/',
 #         'https://www.olx.com.pk/games-entertainment/'
 #     ]
@@ -22,3 +22,9 @@
 #
 #     def parse_item(self, response):
 #         print('Processing..' + response.url)
+#
+# def main():
+#     lul = ElectronicsSpider()
+#     lul.parse_item()
+# if __name__ == '__main__':
+#     main()
