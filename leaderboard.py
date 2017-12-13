@@ -1,8 +1,6 @@
 import asyncio
 
 
-
-
 class Calculated:
 
 
@@ -31,9 +29,7 @@ class Calculated:
         loop.close()
 
         print("Objective "+ str(self.OBJECTIVE)+ " Support " + str(self.SUPPORT) + " Attack " + str(self.ATTACK))
-        # print(self.SUPPORT)
-        # print(self.ATTACK)
-        #print(self.stat['competitive']['Combat']['Barrier Damage Done'])
+
         score = {}
         score["objective"] = self.OBJECTIVE
         score["support"] = self.SUPPORT
@@ -59,8 +55,7 @@ class Calculated:
         for w in combat:
 
             try:
-                # print(w)
-                # print(_get_int(s[mode]['Combat'][w]) / h  * get_multiplier(w, "support_mp"))
+
                 t += _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w,"support_mp")
             except KeyError:
                 t+=0
@@ -68,8 +63,6 @@ class Calculated:
 
             try:
 
-                # print(w)
-                # print(_get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp"))
                 t += _get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp")
             except KeyError:
                 t+=0
@@ -111,22 +104,17 @@ class Calculated:
         h = int(hoursT[0]) * 60
 
         for w in combat:
-            # print(w)
-            # print(_get_int(s[mode]['Combat'][w]) / h  * get_multiplier(w, "support_mp") * 0.7)
+
             try:
                 t += _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w, "support_mp2")  * 0.7
 
             except KeyError:
 
                 t+= 0
-        # for w in assists:
-        #     # print(w)
-        #     # print(_get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp"))
-        #     t += _get_int(s[mode]['Assists'][w]) / h * get_multiplier(w, "assists_mp")
+
 
         for a in awards:
-            # print(a)
-            # print(_get_int(s[mode]['Match Awards'][a]) / h * get_multiplier(a, "awards_mp"))
+
             try:
                 t += _get_int(s[mode]['Match Awards'][a]) / h * get_multiplier(a, "awards_mp")
             except KeyError:
@@ -134,8 +122,6 @@ class Calculated:
 
 
         objective_time = _get_sec(s[mode]['Combat']["Objective Time"]) / h * 50
-        # print("ob")
-        # print(objective_time)
 
         t += objective_time
 
@@ -144,9 +130,6 @@ class Calculated:
 
         else:
             self.OBJECTIVE += int(t)
-
-
-
 
 
     async def _calculate_attack(self, mode = "competitive"):
@@ -165,22 +148,10 @@ class Calculated:
         h = int(hoursT[0]) * 60
 
 
-
-        # t +=  _get_int(s[mode]['Average']['Barrier Damage Done - Avg per 10 Min']) * 1
-        # t += _get_int(s[mode]['Average']['Eliminations - Avg per 10 Min']) * 1
-        # t += _get_int(s[mode]['Average']['Final Blows - Avg per 10 Min']) * 1
-        # t += _get_int(s[mode]['Average']['Solo Kills - Avg per 10 Min']) * 1
-        # t += _get_int(s[mode]['Average']['Hero Damage Done - Avg per 10 Min']) * 1
-
-
-
         for w in combat:
 
-
-
             try:
-                # print(w)
-                # print(_get_int(s[mode]['Combat'][w]) / h * get_multiplier(w, "combat_mp"))
+
                 t+= _get_int(s[mode]['Combat'][w]) / h * get_multiplier(w, "combat_mp")
             except KeyError:
                 t+=0;
@@ -192,11 +163,8 @@ class Calculated:
         else:
             self.ATTACK += int(t)
 
-
-
-
     def lazy_range(up_to):
-        """Generator to return the sequence of integers from 0 to up_to, exclusive."""
+
         index = 0
         while index < up_to:
             yield index

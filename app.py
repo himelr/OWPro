@@ -19,10 +19,6 @@ from bson.json_util import dumps
 from heroboard import HeroCalculations
 
 
-
-
-
-
 HEADERS = {'user-agent': 'Himel Rahman, overwatcher.tk, rebelhaze@gmail.com'}
 BASE_URL = "https://playoverwatch.com/en-us/career/pc/"
 pro_players = [
@@ -84,7 +80,7 @@ def find_user_stats(username):
 
     stats = find_one(username)
 
-    #stats2 = json.dumps(stats)
+
     if stats is None:
 
         stats2 = _get_stats_json(username)
@@ -99,8 +95,7 @@ def find_user_stats(username):
 
         if stats2 != None:
 
-            # statC['competitive'] = stats2['competitive']
-            # statC['quickplay'] = stats2['quickplay']
+
 
             stats_new = update_user(stats2, username)
 
@@ -190,15 +185,7 @@ def get_score(name):
 
 def hero_data():
 
-   # soup = _get_soup("chipshajen-2102")
-   # soup2 = _get_soup("Taimou-2526")
-   # soup3 = _get_soup("EFFECT-31630")
-   # hero_data = get_hero(soup)
-   # hero_data2 = get_hero(soup2)
-   # hero_data3 = get_hero(soup3)
-   # data = calculate_hero( hero_data)
-   # data2 = calculate_hero(hero_data2)
-   # data3 = calculate_hero(hero_data3)
+
    hc = HeroCalculations()
 
    for player in pro_players:
@@ -233,9 +220,7 @@ def get_herostats(user):
 
 def _get_stats_json(user):
 
-    # stats = get_stats('quickplay')
-    #Taimou-2526 , chipshajen-2102 Custa-1679 xQc-11273
-    #user = 'xQc-11273'
+
     soup = _get_soup(user)
 
     if soup == None:
@@ -251,8 +236,6 @@ def _get_stats_json(user):
 
 
 
-    # stats.append(stats_comp)
-    # stats.append(stats_qck)
 
     return stats
 
@@ -280,6 +263,3 @@ if __name__ == '__main__':
 
 
 
-
-# if __name__ == '__main__':
-#  main()
