@@ -55,7 +55,7 @@ test_players = [
 ]
 
 app = Flask(__name__)
-requests_cache.install_cache('github_cache', backend='sqlite', expire_after=180)
+requests_cache.install_cache('github_cache', backend='sqlite', expire_after=180000)
 
 
 @app.route('/')
