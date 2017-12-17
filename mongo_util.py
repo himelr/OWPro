@@ -1,13 +1,13 @@
 # -*- coding: cp1252 -*-
 
-import pymongo,datetime
+import pymongo, datetime
 from pymongo import MongoClient
-from bson.json_util import loads,dumps
+from bson.json_util import loads, dumps
 from bson.objectid import ObjectId
 
 CLIENT_URL = 'ec2-54-194-96-92.eu-west-1.compute.amazonaws.com'
 PORT = 27017
-CLIENTM = MongoClient(CLIENT_URL,PORT)
+CLIENTM = MongoClient(CLIENT_URL, PORT)
 DB = CLIENTM.owapi
 
 
@@ -16,8 +16,10 @@ def save_stats(document):
     post_id = collection.insert_one(document).inserted_id
     print(post_id)
 
+
 def save_score():
     collection = DB.leaderboard
+
 
 def save_rank(document):
     collection = DB.leaderboards
@@ -27,7 +29,7 @@ def save_rank(document):
         fs["scores"] = document["scores"]
         fs["user"] = document["user"]
         fs['updated'] = datetime.datetime.utcnow()
-        collection.update_one({'_id':fs["_id"]}, {"$set": fs}, upsert=False)
+        collection.update_one({'_id': fs["_id"]}, {"$set": fs}, upsert=False)
 
     else:
         document["updated"] = datetime.datetime.utcnow()
@@ -39,11 +41,14 @@ def fetch_all_pros():
     players = collection.find({})
     return dumps(players)
 
+
 def fetch_heroboard():
     collection = DB.heroboards
     herodoc = collection.find_one({"_id": ObjectId("5a302e7e92a8bd251d05ada1")})
 
     return dumps(herodoc)
+
+
 def save_heroboard(doc):
     collection = DB.heroboards
     herodoc = collection.find_one({"_id": ObjectId("5a302e7e92a8bd251d05ada1")})
@@ -58,8 +63,8 @@ def save_heroboard(doc):
     except TypeError:
         return True
 
-def find_one(user):
 
+def find_one(user):
     stats = DB.game_stats
     fs = stats.find_one({"user.username": user})
 
@@ -68,8 +73,8 @@ def find_one(user):
     else:
         return dumps(fs)
 
-def update_user(doc,username):
 
+def update_user(doc, username):
     stats = DB.game_stats
     fs = stats.find_one({"user.username": username})
     fs['updated'] = {"date": datetime.datetime.utcnow()}
@@ -78,10 +83,10 @@ def update_user(doc,username):
 
     stats.update_one({'_id': fs["_id"]}, {"$set": fs}, upsert=False)
 
-
     return dumps(fs)
 
-def add_player(user,name):
+
+def add_player(user, name):
     users = DB.users
     fs = users.find_one({"username": user})
 
@@ -90,7 +95,6 @@ def add_player(user,name):
 
 
     else:
-
 
         try:
             fs['players'].append(name)
@@ -102,6 +106,7 @@ def add_player(user,name):
         users.update_one({'_id': fs["_id"]}, {"$set": fs}, upsert=False)
         return True
 
+
 def find_profile(user):
     users = DB.users
     fs = users.find_one({"username": user})
@@ -110,11 +115,3 @@ def find_profile(user):
         return None
     else:
         return dumps(fs)
-
-
-
-
-
-
-
-

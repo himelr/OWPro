@@ -1,4 +1,3 @@
-
 TITLES = []
 
 hero_data_div_ids = {
@@ -29,42 +28,32 @@ hero_data_div_ids = {
     "Doomfist": "0x02E000000000012F"
 }
 
-
-data_category_ids= {
+data_category_ids = {
     "games_won": "0x0860000000000039",
-    "multikill_best" : "0x0860000000000346",
-    "eliminations_per_life" : "0x08600000000003D2",
-    "weapon_accuracy" : "0x086000000000002F",
-    "time_played" : "0x0860000000000021"}
+    "multikill_best": "0x0860000000000346",
+    "eliminations_per_life": "0x08600000000003D2",
+    "weapon_accuracy": "0x086000000000002F",
+    "time_played": "0x0860000000000021"}
 
 
-
-def get_stats(soup, mode = "competitive"):
-
-
+def get_stats(soup, mode="competitive"):
     comp_box = soup.find('div', attrs={'id': mode})
-    all_heroes = comp_box.find('div', attrs={'class': 'row js-stats toggle-display gutter-18@md spacer-12 spacer-18@md is-active'})
-
+    all_heroes = comp_box.find('div', attrs={
+        'class': 'row js-stats toggle-display gutter-18@md spacer-12 spacer-18@md is-active'})
 
     temp = {}
     i = 0
 
     for table in all_heroes:
 
-       data = _parse_table(table)
-       temp2={}
+        data = _parse_table(table)
+        temp2 = {}
 
-
-       for champ in data:
-
-
+        for champ in data:
             temp2[champ[0]] = champ[1]
 
-
-
-       temp[TITLES[i]] = temp2
-       i += 1
-
+        temp[TITLES[i]] = temp2
+        i += 1
 
     return temp
 
@@ -73,10 +62,10 @@ def get_img(soup):
     # print(soup.find('img', attrs={'class': 'player-portrait'})['src'])
     return soup.find('img', attrs={'class': 'player-portrait'})['src']
 
-def get_rank(soup):
 
+def get_rank(soup):
     rank = {}
-    parsed  = soup.find('div', attrs={'class': 'competitive-rank'})
+    parsed = soup.find('div', attrs={'class': 'competitive-rank'})
     img = parsed.find('img')['src']
     ranking = parsed.find('div', attrs={'class': 'u-align-center h5'}).text
     rank["img"] = img
@@ -88,26 +77,23 @@ def get_rank(soup):
 def get_hero(soup):
     parsed = soup.find('section', attrs={'class': 'hero-comparison-section'})
 
-
     return parsed
 
 
-    print("s")
 def calculate_hero(soup):
-
     player_hero_data = {}
     soup2 = soup.find('div', attrs={'id': 'competitive'})
-    for key, value  in data_category_ids.items():
+    for key, value in data_category_ids.items():
         category = soup2.find('div', attrs={'data-category-id': 'overwatch.guid.' + value})
 
-        data =_player_hero(category,mode = key)
+        data = _player_hero(category, mode=key)
         player_hero_data[key] = data
 
     player_hero_data["img"] = hero_data_div_ids
     return player_hero_data
 
-def _player_hero(category, mode):
 
+def _player_hero(category, mode):
     hero_data = {}
 
     for key, value in hero_data_div_ids.items():
@@ -118,7 +104,7 @@ def _player_hero(category, mode):
         if mode == "games_won" or mode == "multikill_best":
             desc = int(hero_div.find('div', attrs={'class': "description"}).text)
 
-        elif mode =="eliminations_per_life":
+        elif mode == "eliminations_per_life":
             desc = float(hero_div.find('div', attrs={'class': "description"}).text)
 
         elif mode == "weapon_accuracy":
@@ -152,8 +138,8 @@ def _player_hero(category, mode):
 
     return hero_data
 
-def _parse_table(table):
 
+def _parse_table(table):
     table_body = table.find('tbody')
     table_head = table.find('h5', attrs={'class': 'stat-title'})
     TITLES.append(table_head.text)
@@ -161,17 +147,9 @@ def _parse_table(table):
     rows = table_body.find_all('tr')
     data = []
 
-
     for row in rows:
         cols = row.find_all('td')
         cols = [ele.text.strip() for ele in cols]
         data.append([ele for ele in cols if ele])
 
     return data
-
-
-
-
-
-
-

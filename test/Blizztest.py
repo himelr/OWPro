@@ -10,7 +10,7 @@ def main():
 
 
 
-    buyers = tree.xpath('//*[@id="listingData"]/div[3]/div/div[2]/div[2]/div[1]/div[1]/text()')
+    buyers = tree.xpath('//*[@id="listingData"]/div[6]/div/div[1]/div[2]/div/a[3]')
     # # This will create a list of prices
     # prices = tree.xpath('//span[@class="item-price"]/text()')
     # losses = int(misc_box.xpath(".//text()[. = 'Games Lost']/../..")[0][1].text
