@@ -1,4 +1,4 @@
-from blizzard_interface import hero_data_div_ids, data_category_ids
+from owapi.blizzard_interface import hero_data_div_ids, data_category_ids
 
 
 class HeroCalculations:
