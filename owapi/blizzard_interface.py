@@ -59,19 +59,24 @@ def get_stats(soup, mode="competitive"):
 
 
 def get_img(soup):
-    # print(soup.find('img', attrs={'class': 'player-portrait'})['src'])
+
     return soup.find('img', attrs={'class': 'player-portrait'})['src']
 
 
 def get_rank(soup):
     rank = {}
     parsed = soup.find('div', attrs={'class': 'competitive-rank'})
-    img = parsed.find('img')['src']
-    ranking = parsed.find('div', attrs={'class': 'u-align-center h5'}).text
-    rank["img"] = img
-    rank["ranking"] = ranking
 
-    return rank
+    try:
+     img = parsed.find('img')['src']
+     ranking = parsed.find('div', attrs={'class': 'u-align-center h5'}).text
+     rank["img"] = img
+     rank["ranking"] = ranking
+     return rank
+
+    except AttributeError:
+
+     return None
 
 
 def get_hero(soup):
@@ -151,5 +156,5 @@ def _parse_table(table):
         cols = row.find_all('td')
         cols = [ele.text.strip() for ele in cols]
         data.append([ele for ele in cols if ele])
-
+    print(data)
     return data

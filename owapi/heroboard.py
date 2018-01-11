@@ -16,9 +16,9 @@ class HeroCalculations:
                     if hero_data[key][hero] != 0:
                         self.data[key][hero] += hero_data[key][hero]
                         self.half[key][hero] += 1
-                    # print(hero + str(score))
 
-        # 3+6+5
+
+
         else:
             self.data = hero_data
 

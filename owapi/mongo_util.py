@@ -44,14 +44,14 @@ def fetch_all_pros():
 
 def fetch_heroboard():
     collection = DB.heroboards
-    herodoc = collection.find_one({"_id": ObjectId("5a302e7e92a8bd251d05ada1")})
+    herodoc = collection.find_one({"_id": ObjectId("5a57e44a210e893130ef42db")})
 
     return dumps(herodoc)
 
 
 def save_heroboard(doc):
     collection = DB.heroboards
-    herodoc = collection.find_one({"_id": ObjectId("5a302e7e92a8bd251d05ada1")})
+    herodoc = collection.find_one({"_id": ObjectId("5a57e44a210e893130ef42db")})
     try:
         if herodoc == None:
             collection.insert(doc, check_keys=False)
